@@ -365,14 +365,14 @@ footer {
   margin: 0 auto;
 }
 
-h1, h2, h3, h4, h5, h6, 
-.callout-title, 
+h1, h2, h3, h4, h5, h6,  
 .act-subtitle,
 .footer-cta {
     font-family: Georgia, Garamond, 'Times New Roman', serif;
 }
 
 body, p, span, a, li, 
+.callout-title,
 .chart-desc, 
 .footer-desc,
 .callout p {
