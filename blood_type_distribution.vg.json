@@ -1,0 +1,125 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Blood Type Proportion by State",
+    "width": "container",
+    "height": 420,
+    "data": {
+        "url": "blood_donation.csv"
+    },
+    "transform": [
+        {
+            "filter": "datum.blood_type != 'all'"
+        },
+        {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "donations",
+          "as": "state_total_donations"
+        }
+      ],
+      "groupby": ["state"]
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "donations",
+          "as": "blood_type_total"
+        },
+        {
+          "op": "max",
+          "field": "state_total_donations",
+          "as": "state_total"
+        }
+      ],
+      "groupby": ["state", "blood_type"]
+    },
+    {
+      "calculate": "datum.blood_type_total / datum.state_total",
+      "as": "blood_type_percentage"
+    },
+    {
+      "calculate": "upper(datum.blood_type)",
+      "as": "clean_blood_type"
+    }
+    ],
+    "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 2
+    },
+    "encoding": {
+        "y": {
+            "field": "state",
+            "type": "nominal",
+            "sort": {
+                "op": "sum",
+                "field": "blood_type_total",
+                "order": "descending"
+            },
+            "axis": {
+                "title": null,
+                "labelFontSize": 11
+            }
+        },
+        "x": {
+            "field": "blood_type_total",
+            "type": "quantitative",
+            "stack": "normalize",
+            "axis": {
+                "format": "%",
+                "title": "Proportion of Blood Type Donations",
+                "tickCount": 5
+            }
+        },
+        "color": {
+            "field": "blood_type",
+            "type": "nominal",
+            "scale": {
+                "domain": [
+                    "o",
+                    "a",
+                    "b",
+                    "ab"
+                ],
+                "range": [
+                    "#67001f",
+                    "#b2182b",
+                    "#ef8a62",
+                    "#fddbc7"
+                ]
+            },
+            "title": "Blood Type",
+            "legend": {
+                "orient": "bottom",
+                "direction": "horizontal",
+                "symbolSize": 120,
+                "labelExpr": "upper(datum.label)"
+            }
+        },
+        "tooltip": [
+            {
+                "field": "state",
+                "type": "nominal",
+                "title": "State"
+            },
+            {
+                "field": "clean_blood_type",
+                "type": "nominal",
+                "title": "Blood Type"
+            },
+            {
+                "field": "blood_type_total",
+                "type": "quantitative",
+                "format": ",",
+                "title": "Total Donations"
+            },
+            {
+        "field": "blood_type_percentage",
+        "type": "quantitative",
+        "format": ".1%",
+        "title": "Proportion Share"
+      }
+        ]
+    }
+}

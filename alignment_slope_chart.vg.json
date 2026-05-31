@@ -1,0 +1,334 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "The Alignment Gap: Donation Rate Rank vs. Hospital Beds Rank",
+  "width": "container",
+  "height": 520,
+  "data": {
+    "url": "state_summary.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "donation_rate",
+        "beds_per_1000"
+      ],
+      "as": [
+        "metric",
+        "raw_value"
+      ]
+    },
+    {
+      "calculate": "datum.metric == 'donation_rate' ? 'Donation Rate' : 'Beds per 1,000'",
+      "as": "metric_label"
+    },
+    {
+      "window": [
+        {
+          "op": "rank",
+          "as": "rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "raw_value",
+          "order": "descending"
+        },
+        {
+          "field": "state",
+          "order": "ascending"
+        }
+      ],
+      "groupby": [
+        "metric"
+      ]
+    },
+    {
+      "window": [
+        {
+          "op": "first_value",
+          "field": "rank",
+          "as": "donation_rank"
+        },
+        {
+          "op": "last_value",
+          "field": "rank",
+          "as": "beds_rank"
+        }
+      ],
+      "sort": [
+        {
+          "field": "metric_label",
+          "order": "descending"
+        }
+      ],
+      "groupby": [
+        "state"
+      ],
+      "frame": [
+        null,
+        null
+      ]
+    },
+    {
+      "calculate": "datum.donation_rank <= datum.beds_rank ? 'Well Supplied' : 'Needs Attention'",
+      "as": "slope_direction"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "opacity": 0.65
+      },
+      "encoding": {
+        "x": {
+          "field": "metric_label",
+          "type": "ordinal",
+          "sort": [
+            "Donation Rate",
+            "Beds per 1,000"
+          ],
+          "axis": {
+            "orient": "top",
+            "title": null,
+            "labelFontSize": 13,
+            "labelFontWeight": "bold"
+          }
+        },
+        "y": {
+          "field": "rank",
+          "type": "quantitative",
+          "scale": {
+            "reverse": true
+          },
+          "axis": {
+            "title": "Rank  (1 = Best)",
+            "tickCount": 14,
+            "tickMinStep": 1
+          }
+        },
+        "detail": {
+          "field": "state",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.raw_value == 0",
+            "value": "#d3d3d3"
+          },
+          "field": "slope_direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Well Supplied",
+              "Needs Attention"
+            ],
+            "range": [
+              "#0072b2",
+              "#d55e00"
+            ]
+          },
+          "title": "Status"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 90,
+        "opacity": 0.95
+      },
+      "encoding": {
+        "x": {
+          "field": "metric_label",
+          "type": "ordinal",
+          "sort": [
+            "Donation Rate",
+            "Beds per 1,000"
+          ]
+        },
+        "y": {
+          "field": "rank",
+          "type": "quantitative",
+          "scale": {
+            "reverse": true
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.raw_value == 0",
+            "value": "#d3d3d3"
+          },
+          "field": "slope_direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Well Supplied",
+              "Needs Attention"
+            ],
+            "range": [
+              "#0072b2",
+              "#d55e00"
+            ]
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "metric_label",
+            "type": "nominal",
+            "title": "Metric"
+          },
+          {
+            "field": "rank",
+            "type": "quantitative",
+            "title": "Rank"
+          },
+          {
+            "field": "raw_value",
+            "type": "quantitative",
+            "format": ".2f",
+            "title": "Value"
+          },
+          {
+            "field": "slope_direction",
+            "type": "nominal",
+            "title": "Status"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.metric_label == 'Donation Rate'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -10,
+        "fontSize": 9
+      },
+      "encoding": {
+        "x": {
+          "field": "metric_label",
+          "type": "ordinal",
+          "sort": [
+            "Donation Rate",
+            "Beds per 1,000"
+          ]
+        },
+        "y": {
+          "field": "rank",
+          "type": "quantitative",
+          "scale": {
+            "reverse": true
+          }
+        },
+        "text": {
+          "field": "state",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "slope_direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Well Supplied",
+              "Needs Attention"
+            ],
+            "range": [
+              "#0072b2",
+              "#d55e00"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.metric_label == 'Beds per 1,000'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 9
+      },
+      "encoding": {
+        "x": {
+          "field": "metric_label",
+          "type": "ordinal",
+          "sort": [
+            "Donation Rate",
+            "Beds per 1,000"
+          ]
+        },
+        "y": {
+          "field": "rank",
+          "type": "quantitative",
+          "scale": {
+            "reverse": true
+          }
+        },
+        "text": {
+          "field": "state",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "slope_direction",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Well Supplied",
+              "Needs Attention"
+            ],
+            "range": [
+              "#0072b2",
+              "#d55e00"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {}
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "fontSize": 9.5,
+        "lineHeight": 13,
+        "fontStyle": "italic",
+        "color": "#666666"
+      },
+      "encoding": {
+        "x": {
+          "value": -50
+        },
+        "y": {
+          "value": 540
+        },
+        "text": {
+          "value": [
+            "* Note: Grayed-out states (Perlis, Putrajaya, Labuan) show low rankings",
+            "  because BBISv2 aggregates Putrajaya data with Kuala Lumpur,",
+            "  while Perlis and Labuan lack integrated BBISv2 data collection sites."
+          ]
+        }
+      }
+    }
+  ]
+}

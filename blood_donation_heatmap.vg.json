@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Monthly Donation Seasonality by State",
+  "width": "container",
+  "height": 400,
+  "data": {"url": "blood_donation.csv"},
+  "transform": [
+    {"filter": "datum.blood_type == 'all'"}
+  ],
+  "mark": {"type": "rect", "cornerRadius": 2},
+  "encoding": {
+    "x": {
+      "field": "date",
+      "type": "ordinal",
+      "timeUnit": "month",
+      "title": "Month",
+      "axis": {
+        "format": "%b",
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": {"op": "sum", "field": "donations", "order": "descending"},
+      "axis": {"title": null, "labelFontSize": 10}
+    },
+    "color": {
+      "aggregate": "sum",
+      "field": "donations",
+      "type": "quantitative",
+      "scale": {"scheme": "reds"},
+      "title": "Total Donations",
+      "legend": {"gradientLength": 120}
+    },
+    "tooltip": [
+      {"field": "state", "type": "nominal", "title": "State"},
+      {
+        "field": "date",
+        "type": "ordinal",
+        "timeUnit": "month",
+        "format": "%B",
+        "title": "Month"
+      },
+      {
+        "aggregate": "sum",
+        "field": "donations",
+        "type": "quantitative",
+        "format": ",",
+        "title": "Total Donations"
+      }
+    ]
+  },
+  "config": {
+    "rect": {"stroke": "white", "strokeWidth": 1}
+  }
+}

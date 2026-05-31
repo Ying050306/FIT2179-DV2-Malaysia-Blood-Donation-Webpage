@@ -1,0 +1,85 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 400,
+  "data": {
+    "url": "population.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "pop_18",
+        "pop_60"
+      ],
+      "as": [
+        "age_group",
+        "count"
+      ]
+    },
+    {
+      "calculate": "datum.count / datum.pop",
+      "as": "percentage"
+    },
+    {
+      "calculate": "datum.age_group == 'pop_18' ? 'Adult (18-60 Years Old)' : 'Elderly (>60 Years Old)'",
+      "as": "age_group_label"
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": "-x",
+      "title": null
+    },
+    "x": {
+      "field": "count",
+      "type": "quantitative",
+      "stack": "normalize",
+      "axis": {
+        "format": "%"
+      },
+      "title": "Population Share"
+    },
+    "color": {
+      "field": "age_group_label",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Adult (18-60 Years Old)",
+          "Elderly (>60 Years Old)"
+        ],
+        "range": [
+          "#1f77b4",
+          "#c7c7c7"
+        ]
+      },
+      "title": "Age Demographic"
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "type": "nominal",
+        "title": "State"
+      },
+      {
+        "field": "age_group_label",
+        "type": "nominal",
+        "title": "Age Group"
+      },
+      {
+        "field": "count",
+        "type": "quantitative",
+        "format": ",",
+        "title": "Population Count"
+      },
+      {
+        "field": "percentage",
+        "type": "quantitative",
+        "format": ".1%",
+        "title": "Share of Total"
+      }
+    ]
+  }
+}

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Every Drop Counts - Blood Donation in Malaysia</title>
+    <meta name="description"
+        content="A data story tracing 6 years of blood donation records across 14 Malaysian states.">
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.28.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.21.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.26.0"></script>
+
+    <link rel="stylesheet" href="style.css">`
+</head>
+
+<body>
+
+    <nav class="top-nav">
+        <a class="nav-brand" href="#">Every Drop Counts</a>
+        <ul class="nav-acts">
+            <li><a href="#act1">Donations</a></li>
+            <li><a href="#act2">Donors</a></li>
+            <li><a href="#act3">Demand</a></li>
+            <li><a href="#act4">Insights</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-inner">
+
+            <div>
+                <span class="hero-eyebrow">A Data Story &middot; Malaysia &middot; 2020 - 2025</span>
+                <h1 class="hero-title">
+                    Every<br>
+                    <em>Drop</em><br>
+                    Counts
+                </h1>
+                <p class="hero-lead">
+                    Malaysia's blood banks constantly face the challenge of maintaining optimal reserves. Every hour, a
+                    patient needs blood that may
+                    not be there. This story traces 6 years of donation records across states to uncover regional supply
+                    vulnerabilities, highlighting how an aging donor demographic and uneven supply lines require urgent,
+                    localized
+                    action.
+                </p>
+            </div>
+
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="hero-stat-num">~575 K</span>
+                    <span class="hero-stat-label">Annual donations (2023)</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-num">2.3 %</span>
+                    <span class="hero-stat-label">Current donation rate</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-num">3.0 %</span>
+                    <span class="hero-stat-label">WHO recommended target</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="hero-stat-num">14</span>
+                    <span class="hero-stat-label">States and territories</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="act1">
+        <div class="act-header" style="width: 100%;">
+            <div class="act-header-inner" style="margin-left: 3%; padding-left: 15px;">
+                <div style="text-align: left;">
+                    <h2>The National Landscape</h2>
+                    <p class="act-subtitle" style="text-align: left; margin-left: 0;">How much blood is donated in
+                        Malaysia, and which
+                        states lead the way?</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="act-body">
+            <div class="container">
+                <div class="row-text-chart">
+                    <div class="desc-col">
+                        <h3>Donations<br>Over Time</h3>
+                        <p>
+                            A closer look at monthly blood donation patterns from 2020 through 2025
+                            shows a system vulnerable to external disruptions and national crisis. While monthly
+                            donations fluctuate throughout the year,
+                            the overall trajectory points upward, with donation volumes reaching new highs more
+                            frequently after 2022.
+                        </p>
+                        <p>
+                            The absolute lowest point across the timeline occured in <strong>April 2020</strong>.
+                            This dramatic drop was caused by the sudden enforcement of the <strong>first Movement
+                                Control Order (MCO 1.0)</strong>,
+                            which led to the mass cancellation of mobile donation drives and left citizens hesitant to
+                            leave their homes.
+                        </p>
+                        <div class="callout amber">
+                            <div class="callout-title">Seasonal Rhythms</div>
+                            <p>
+                                Following the 2020 shock,
+                                the recurring annual drops represent festive, most notably the fasting month of Ramadan,
+                                where donations
+                                naturally experience a slowdown.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>Monthly Blood Donations, 2020 - 2025</h4>
+                        <p class="chart-desc">
+                            Aggregate monthly donations across all states. The historic low in April 2020 highlights the
+                            fragility
+                            of relying on mobile drives during a strict lockdown, while subsequent troughs map onto
+                            Malaysia's annual festive calendar.
+                        </p>
+                        <div class="chart-vis" id="vis1"></div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-full">
+                    <div class="chart-card">
+                        <h4>Donations per 1,000 Eligible People - State Level</h4>
+                        <p class="chart-desc">
+                            Normalising donation counts by the eligible population isolates regional performance from
+                            sheer state size,
+                            highlighting massive geographical disparities across Malaysia.
+                        </p>
+                        <div class="chart-vis" id="vis2"></div>
+                        <div class="callout amber" style="margin-top:14px;">
+                            <div class="callout-title">The Capital Corridor Outlier</div>
+                            <p>
+                                The data reveals a staggering gulf between the capital and the rest of the nation.
+                                <strong>Kuala Lumpur leads with an exceptional 865.0 donations per 1,000 eligible
+                                    people</strong>,
+                                while the second-highest state, <strong>Melaka, sits far behind at 254.9</strong>.
+                                This massive disparity reflects the extreme centralization of healthcare resources, the
+                                presence of the
+                                National Blood Centre (PDN) in KL, and data aggregation rules that combine Putrajaya's
+                                records with KL.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-full">
+                    <div class="chart-card">
+                        <h4>Blood Type Proportions by State</h4>
+                        <p class="chart-desc">
+                            The percentage share of each blood type collected at the state level. While blood type
+                            distributions are largely consistent across Peninsular Malaysia, regional ethnic
+                            demographics drive localized variances.
+                        </p>
+                        <div class="chart-vis" id="vis3"></div>
+                        <div class="callout amber" style="margin-top:14px;">
+                            <div class="callout-title">Sabah Demography Deviation</div>
+                            <p>
+                                While type AB consistently maintains a small but steady ~5% share across all regions,
+                                <strong>Sabah stands out as a massive nationwide anomaly</strong>. In Sabah,
+                                <strong>Type O blood accounts for nearly half of all donations (~48%)</strong>, forcing
+                                the proportion of Type B blood down significantly compared to the peninsula.
+                                This distinct pattern highlights how East Malaysia's unique indigenous demographics
+                                dictate localized blood bank supply profiles.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="act2">
+        <div class="act-header" style="width: 100%;">
+            <div class="act-header-inner" style="margin-left: 3%; padding-left: 15px;">
+                <div style="text-align: left;">
+                    <h2>Who Is Donating?</h2>
+                    <p class="act-subtitle" style="text-align: left; margin-left: 0;">Explore how shifting demographics,
+                        regional disparities, and dips during festive periods influence blood donation volume.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="act-body">
+            <div class="container">
+                <div class="row-full">
+                    <div class="chart-card">
+                        <h4>Annual Donation Trends - State Comparison, 2020 - 2025</h4>
+                        <div class="chart-desc-2col">
+                            <p>
+                                Comparing annual donation volumes across Malaysia highlights a striking centralization
+                                of the country's blood supply. While most states remain flat, the absolute volume tells
+                                a story of an immense regional gulf.
+                            </p>
+                            <p>
+                                The highlighted line isolates <strong>Kuala Lumpur</strong> as the primary engine of
+                                national collections, while all other states and territories are greyed out at the
+                                bottom to illustrate the scale of this disparity.
+                            </p>
+                        </div>
+                        <div class="chart-vis" id="vis4"></div>
+                        <div class="callout wide">
+                            <div class="callout-title">The Capital Surge</div>
+                            <p>
+                                Far from suffering a prolonged pandemic decline, <strong>Kuala Lumpur's annual volume
+                                    surged from roughly 170k in 2020 to over 200k by 2022</strong>.
+                                This massive increase reflects the consolidation of collections into major central hubs
+                                like the National Blood Centre (PDN) to guarantee supply security during turbulent
+                                years.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-text-chart">
+                    <div class="desc-col">
+                        <h3>Population,<br>Age and<br>Donors</h3>
+                        <p>
+                            Sheer population size is a poor predictor of blood donation volume.
+                            Local age structure and regional healthcare dynamics shape donor availability profoundly.
+                        </p>
+                        <p>
+                            A stark paradox is exposed: <strong>Selangor holds the largest population (~6.5M+) but
+                                collects a fraction of the blood managed by Kuala Lumpur</strong>, which processes
+                            nearly 200k donations annually despite having under 2 million residents.
+                        </p>
+                        <div class="callout teal">
+                            <div class="callout-title">How to Read</div>
+                            <p>
+                                <strong>Bubble Size:</strong> Adult eligible share (18 - 60%).<br>
+                                <strong>Color Depth:</strong> Elderly share (60+%, darker red = more elderly). Use the
+                                slider beneath the chart to filter by minimum population.
+                            </p>
+                        </div>
+                        <div class="callout amber" style="margin-top:0.75rem;">
+                            <div class="callout-title">Aging Demographics</div>
+                            <p>
+                                Perak and Pulau Pinang have the highest elderly shares, steadily shrinking their donor
+                                pools while hospital demand grows.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>Blood Donation Volumes vs. Total State Population</h4>
+                        <p class="chart-desc">
+                            An analysis of average annual donations plotted against total population.
+                            The extreme vertical position of Kuala Lumpur highlights its status as a centralized
+                            national hub, while Selangor's horizontal extension illustrates unharvested donor potential.
+                        </p>
+                        <div class="chart-vis" id="vis5"></div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-2charts">
+                    <div class="chart-card">
+                        <h4>Monthly Donation Seasonality by State</h4>
+                        <p class="chart-desc">
+                            A monthly breakdown of total donations across states.
+                            Instead of revealing strong festive or holiday fluctuations, the data shows that calendar
+                            seasonality barely registers when compared to regional distribution gaps.
+                        </p>
+                        <div class="chart-vis" id="vis6"></div>
+                        <div class="callout" style="margin-top:14px;">
+                            <div class="callout-title">The Volume Inversion</div>
+                            <p>
+                                The chart proves that <strong>geography, not the time of year, dominates Malaysia's
+                                    blood supply data</strong>.
+                                Each state's row remains almost entirely uniform from January to December. Rather than
+                                seasonal shifts, it emphasizes the massive divide between Kuala Lumpur's constant
+                                high-volume collections (peaking near 106,309) and the lower, flat baselines of the
+                                other states.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>Population Structure by State</h4>
+                        <p class="chart-desc">
+                            The percentage share of each state's population segmented by age group. The eligible adult
+                            donor segment (18-60 Years Old) is highlighted in blue to show where the demographic
+                            potential is proportionally highest.
+                        </p>
+                        <div class="chart-vis" id="vis7"></div>
+                        <div class="callout amber" style="margin-top:14px;">
+                            <div class="callout-title">Demographic Difference</div>
+                            <p>
+                                The proportions vary noticeably across regions. <strong>Putrajaya and Sabah command the
+                                    highest eligible donor shares</strong> with adults making up over 90% of their
+                                tracked population structure.
+                                Conversely, <strong>Perak and Perlis show the most advanced aging profiles</strong>,
+                                leaving them with compressed adult pools and a significantly higher proportion of
+                                elderly residents (>60 Years Old)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="act3">
+        <div class="act-header" style="width: 100%;">
+            <div class="act-header-inner" style="margin-left: 3%; padding-left: 15px;">
+                <div style="text-align: left;">
+                    <h2>Where Is Blood Needed?</h2>
+                    <p class="act-subtitle" style="text-align: left; margin-left: 0;">Hospital infrastructure reveals
+                        where demand for
+                        donated blood is highest.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="act-body">
+            <div class="container">
+                <div class="row-text-chart">
+                    <div class="desc-col">
+                        <h3>Hospital Beds as a Demand Proxy</h3>
+                        <p>
+                            Blood supply is only meaningful when measured against regional healthcare capacity. Hospital
+                            bed density is a
+                            strong proxy for medical need.
+                        </p>
+                        <p>
+                            The critical vulnerability zones are regions where a high density of hospital beds (darker
+                            blue) overlaps with a historically low or aging donor base.
+                        </p>
+                        <div class="callout teal">
+                            <div class="callout-title">Compare Maps</div>
+                            <p>
+                                Compare this with the donation rate map. States that display <strong>dark blue here
+                                    (high demand) but were pale orange on previous maps (low collection
+                                    footprint)</strong>
+                                run the highest systemic risk of supply-demand friction.
+                            </p>
+                        </div>
+                        <div class="callout amber" style="margin-top:0.75rem;">
+                            <div class="callout-title">The Perak Vulnerability</div>
+                            <p>
+                                <strong>Perak stands out as the darkest region on the map</strong>, reaching the "Very
+                                High" tier of 4.5 or more beds per 1,000 people.
+                                Combined with its older population structure, this massive medical infrastructure
+                                concentration creates an intense localized reliance on steady blood supply lines.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>Hospital Beds per 1,000 People - State Level</h4>
+                        <p class="chart-desc">
+                            Geographic distribution of hospital beds normalized per 1,000 residents.
+                            Darker blue regions represent higher relative concentration of medical infrastructure.
+                        </p>
+                        <div class="chart-vis" id="vis8"></div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-full">
+                    <div class="chart-card">
+                        <h4>Hospital Bed Distribution Across States Over Time</h4>
+                        <div class="chart-desc-2col">
+                            <p>
+                                This heatmap shows hospital bed capacity per state over time. Tracking these multi-year
+                                shifts clarifies where regional healthcare infrastructures and their corresponding blood
+                                demands are concentrating most heavily.
+                            </p>
+                            <p>
+                                <strong>Selangor dominates the volume baseline</strong>, having total beds at around
+                                7600 in 2022. Meanwhile, states like Johor, Perak, Sabah, and Kuala Lumpur present a
+                                stable, highly concentrated secondary tier of infrastructure.
+                            </p>
+                        </div>
+                        <div class="chart-vis" id="vis9"></div>
+                        <div class="callout wide">
+                            <div class="callout-title">Expanding Demand</div>
+                            <p>
+                                States where bed counts grow fastest require the most attention. Increased hospital
+                                capacity without increased donors worsens the crisis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="act4">
+        <div class="act-header" style="width: 100%;">
+            <div class="act-header-inner" style="margin-left: 3%; padding-left: 15px;">
+                <div style="text-align: left;">
+                    <h2>Bridging the Gap</h2>
+                    <p class="act-subtitle" style="text-align: left; margin-left: 0;">Combining supply and demand
+                        reveals which states
+                        need urgent action.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="act-body">
+            <div class="container">
+                <div class="row-text-chart">
+                    <div class="desc-col">
+                        <h3>Ranking Supply Against Demand</h3>
+                        <p>
+                            Plotting donation rate ranks alongside hospital bed ranks exposes the alignment or
+                            misalignment between blood supply and demand.
+                        </p>
+                        <p>
+                            Since peak rankings are placed at the top (Rank 1 = Best), <strong>an upward-sloping line
+                                identifies a structural vulnerability</strong> where a state's healthcare capacity
+                            heavily outpaces its internal donation performance.
+                        </p>
+                        <div class="callout">
+                            <div class="callout-title">Needs Attention (Orange)</div>
+                            <p>
+                                Orange lines flag regions with supply deficits. <strong>Kuala Lumpur displays the most
+                                    critical upward gap</strong>, resting at a modest 9th in donation rank but scaling
+                                to 1st in hospital bed concentration. Perak, Negeri Sembilan, Pahang and Kelantan
+                                display similar structural imbalances.
+                            </p>
+                        </div>
+                        <div class="callout teal" style="margin-top:0.75rem;">
+                            <div class="callout-title">Well Supplied (Blue)</div>
+                            <p>
+                                Teal lines show states where donations exceed hospital demand. <strong>Melaka and Pulau
+                                    Pinang exhibit steep downward slopes</strong>, leading the nation in donation
+                                performance (1st and 2nd) while maintaining lower relative bed rankings.
+                                These states serve as essential pillars for cross-regional supply redistribution
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>The Alignment Gap: Donation Rank vs. Hospital Beds Rank</h4>
+                        <p class="chart-desc">
+                            A slopegraph matching each state's donation rate rank to its per-capita hospital beds rank.
+                            Upward slopes denote infrastructure demand outstripping donation capacity, while downward
+                            slopes signify surplus potential.
+                        </p>
+                        <div class="chart-vis" id="vis10"></div>
+                    </div>
+                </div>
+
+                <hr class="section-sep">
+
+                <div class="row-2charts">
+                    <div class="chart-card">
+                        <h4>Donation Surplus or Deficit by State</h4>
+                        <p class="chart-desc">
+                            Bars extending right signal a surplus, while bars extending left signal a deficit where
+                            demand
+                            outpaces local supply. <strong>Labuan, Perlis, and Putrajaya are grayed out</strong> due to
+                            data collection anomalies
+                            and integration baselines.
+                        </p>
+                        <div class="chart-vis" id="vis11"></div>
+                        <div class="callout" style="margin-top:14px;">
+                            <div class="callout-title">In Deficit, Priority Targets</div>
+                            <p>
+                                Active states extending left (such as Selangor and Kelantan) are major priority targets
+                                for targeted
+                                donation campaigns, as local donor collection rates do not fully sustain their baseline
+                                healthcare infrastructures.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h4>Population Eligibility Breakdown by State</h4>
+                        <p class="chart-desc">
+                            The orange "Over 60" segment highlights the expanding elderly demographic transitioning out
+                            of the active
+                            donor pool, while the light blue segment captures the dependent under-18 population.
+                        </p>
+                        <div class="chart-vis" id="vis12"></div>
+                        <div class="callout amber" style="margin-top:14px;">
+                            <div class="callout-title">Demographic Shift</div>
+                            <p>
+                                As regional populations age, the primary eligible donor core (ages 18 to 60) faces
+                                systemic pressure.
+                                The dual challenge of a contracting baseline donor pool and rising healthcare
+                                utilization among seniors
+                                underscores the need for proactive youth recruitment campaigns.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="text-align: left;">
+        <div class="footer-inner" style="text-align: left; margin-left: 0; padding-left: 0;">
+            <h2 class="footer-cta" style="text-align: left;">
+                Give Blood.<br><em>Give Life.</em>
+            </h2>
+            <p class="footer-desc" style="text-align: left; margin-left: 0; padding-left: 0;">
+                <strong>Author:</strong> Lee Zhi Ying &nbsp;|&nbsp; <strong>Date:</strong> 29/5/2026<br><br>
+                <strong>Data Sources:</strong><br>
+                1. Hospital Beds: Government of Malaysia. (2022). <em>Hospital Beds by State and Hospital Type</em>. <a
+                    href="https://data.gov.my/data-catalogue/hospital_beds?state=kedah&type=all&visual=table"
+                    target="_blank" style="color: inherit; text-decoration: underline;">data.gov.my</a><br>
+                2. Blood Donations: Ministry of Health Malaysia. (2026). <em>Daily Blood Donations by Blood Group &
+                    State</em>. <a
+                    href="https://data.moh.gov.my/data-catalogue/blood_donations_state?state=johor&blood_type=b&visual=table"
+                    target="_blank" style="color: inherit; text-decoration: underline;">KKMNow</a><br>
+                3. Population Data: Thayanithy Jegan. (2020). <em>Malaysia Population</em>. <a
+                    href="https://www.kaggle.com/datasets/thajegan76/malaysia-population?select=population.csv"
+                    target="_blank" style="color: inherit; text-decoration: underline;">Kaggle</a><br><br>
+                Visualisations built with Vega-Lite 5.
+            </p>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        const embedOptions = {
+            "actions": false,
+            "mode": "vega-lite",
+            "renderer": "svg"
+        };
+
+        vegaEmbed('#vis1', "blood_donation_overview.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis2', "donations_per_capita_chloropleth_map.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis3', "blood_type_distribution.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis4', "donation_trend_line_chart.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis5', "bubble_scatter_plot.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis6', "blood_donation_heatmap.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis7', "population_bar_chart.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis8', "hospital_beds_per_capita_chloropleth.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis9', "healthcare_footprint_heatmap.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis10', "alignment_slope_chart.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis11', "donation_surplus_or_deficit.vg.json", embedOptions).catch(console.error);
+        vegaEmbed('#vis12', "population_eligibility_stacked_bar.vg.json", embedOptions).catch(console.error);
+    </script>
+</body>
+
+</html>

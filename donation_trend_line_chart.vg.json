@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Annual Donation Trend of Each State",
+  "data": {"url": "blood_donation.csv"},
+  "width": "container",
+  "height": 400,
+  "transform": [
+    {
+      "filter": "datum.blood_type == 'all'"
+    },
+    {
+      "timeUnit": "year",
+      "field": "date",
+      "as": "year"
+    },
+    {
+      "aggregate": [{"op": "sum", "field": "donations", "as": "total_donations"}],
+      "groupby": ["state", "year"]
+    },
+    {
+      "joinaggregate": [{"op": "max", "field": "total_donations", "as": "state_max"}],
+      "groupby": ["state"]
+    },
+    {
+      "joinaggregate": [{"op": "max", "field": "total_donations", "as": "global_max"}]
+    },
+    {
+      "calculate": "datum.state_max == datum.global_max ? 'Highest State' : 'Other States'",
+      "as": "group"
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "temporal",
+      "axis": {
+        "title": null,
+        "labelFontSize": 10,
+        "tickCount": 5,
+        "labelAngle": -25
+      }
+    },
+    "y": {
+      "field": "total_donations",
+      "type": "quantitative",
+      "axis": {
+        "title": "Total Donations",
+        "labelFontSize": 10,
+        "tickCount": 5,
+        "format": ".2s"
+      }
+    },
+    "color": {
+      "field": "group",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Other States", "Highest State"],
+        "range": ["#d3d3d3", "#c41e3a"]
+      },
+      "legend": {"title": null}
+    },
+    "opacity": {
+      "field": "group",
+      "type": "nominal",
+      "scale": {
+        "domain": ["Other States", "Highest State"],
+        "range": [0.4, 1.0]
+      },
+      "legend": null
+    },
+    "detail": {
+      "field": "state",
+      "type": "nominal"
+    }
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2.5,
+        "interpolate": "monotone"
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "size": 35,
+        "filled": true
+      },
+      "encoding": {
+        "tooltip": [
+          {"field": "state", "type": "nominal", "title": "State"},
+          {"field": "year", "type": "temporal", "timeUnit": "year", "title": "Year"},
+          {"field": "total_donations", "type": "quantitative", "format": ",", "title": "Donations"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "lightgray"}
+  }
+}

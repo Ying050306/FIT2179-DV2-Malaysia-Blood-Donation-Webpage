@@ -1,0 +1,108 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Blood Donation Volumes vs. Total State Population",
+  "width": "container",
+  "height": 460,
+  "data": {"url": "blood_donation.csv"},
+  "params": [
+    {
+      "name": "pop_min",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 7000000,
+        "step": 200000,
+        "name": "Min. Total Population: "
+      }
+    }
+  ],
+  "transform": [
+  {"filter": "datum.blood_type == 'all'"},
+  {"timeUnit": "year", "field": "date", "as": "year"},
+  {
+    "aggregate": [{"op": "sum", "field": "donations", "as": "donations_per_year"}],
+    "groupby": ["state", "year"]
+  },
+  {
+    "aggregate": [{"op": "mean", "field": "donations_per_year", "as": "total_donations"}],
+    "groupby": ["state"]
+  },
+  {
+    "lookup": "state",
+    "from": {
+      "data": {"url": "population.csv"},
+      "key": "state",
+      "fields": ["pop", "pop_60", "pop_18"]
+    }
+  },
+  {"filter": "datum.pop != null"},
+  {"calculate": "datum.pop_60 / datum.pop * 100", "as": "elderly_pct"},
+  {"calculate": "datum.pop_18 / datum.pop * 100", "as": "adult_pct"},
+  {"filter": "datum.pop >= pop_min"}
+],
+  "layer": [
+    {
+      "mark": {
+        "type": "circle",
+        "opacity": 0.78,
+        "stroke": "white",
+        "strokeWidth": 0.4
+      },
+      "encoding": {
+        "x": {
+          "field": "pop",
+          "type": "quantitative",
+          "title": "Total Population",
+          "axis": {"tickCount": 6, "format": ".2s"},
+          "scale": {"zero": true}
+        },
+        "y": {
+          "field": "total_donations",
+          "type": "quantitative",
+          "title": "Total Donations (Annual Average)",
+          "axis": {"tickCount": 6, "format": ".2s"},
+          "scale": {"zero": true}
+        },
+        "size": {
+  "field": "adult_pct",
+  "type": "quantitative",
+  "title": "Adult Share (18 to 60) %",
+  "scale": {
+    "zero": false,
+    "range": [100, 1200]},
+  "legend": {"format": ".1f"}
+},
+        "color": {
+          "field": "elderly_pct",
+          "type": "quantitative",
+          "title": "Elderly Share (60+) %",
+          "scale": {"scheme": "orangered"},
+          "legend": {"format": ".1f"}
+        },
+        "tooltip": [
+  {"field": "state", "type": "nominal", "title": "State"},
+  {"field": "total_donations", "type": "quantitative", "format": ",", "title": "Annual Donations"},
+  {"field": "pop", "type": "quantitative", "format": ",", "title": "Total Population"},
+  {"field": "adult_pct", "type": "quantitative", "format": ".1f", "title": "Adult (18 to 60) %"},
+  {"field": "elderly_pct", "type": "quantitative", "format": ".1f", "title": "Elderly (60+) %"}
+]
+      }
+    },
+    {
+  "mark": {
+    "type": "text",
+    "dy": -16,
+    "fontSize": 10,
+    "fontStyle": "italic",
+    "fontWeight": 500
+  },
+  "encoding": {
+    "x": {"field": "pop", "type": "quantitative"},
+    "y": {"field": "total_donations", "type": "quantitative"},
+    "text": {"field": "state", "type": "nominal"},
+    "opacity": {"value": 1}
+  }
+}
+  ]
+}

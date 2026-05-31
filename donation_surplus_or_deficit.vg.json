@@ -1,0 +1,118 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Donation Surplus or Deficit by State",
+  "width": "container",
+  "height": 420,
+  "data": {
+    "url": "state_summary.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum.donation_rate - (datum.beds_per_1000 * 10)",
+      "as": "surplus_deficit"
+    },
+    {
+      "calculate": "datum.surplus_deficit >= 0 ? 'Surplus' : 'Deficit'",
+      "as": "status"
+    }
+  ],
+  "encoding": {
+    "y": {
+      "field": "state",
+      "type": "nominal",
+      "sort": {
+        "field": "surplus_deficit",
+        "order": "descending"
+      },
+      "axis": {
+        "title": null,
+        "labelFontSize": 11
+      }
+    },
+    "x": {
+      "field": "surplus_deficit",
+      "type": "quantitative",
+      "axis": {
+        "title": " Deficit  |  Surplus ",
+        "tickCount": 8
+      }
+    },
+    "color": {
+      "condition": {
+        "test": "indexof(['Labuan', 'Putrajaya', 'Perlis'], datum.state) >= 0",
+        "value": "#d3d3d3"
+      },
+      "field": "status",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Surplus",
+          "Deficit"
+        ],
+        "range": [
+          "#0072b2",
+          "#d55e00"
+        ]
+      },
+      "title": "Status"
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "type": "nominal",
+        "title": "State"
+      },
+      {
+        "field": "surplus_deficit",
+        "type": "quantitative",
+        "format": ".2f",
+        "title": "Surplus / Deficit"
+      },
+      {
+        "field": "donation_rate",
+        "type": "quantitative",
+        "format": ".2f",
+        "title": "Donation Rate / 1,000"
+      },
+      {
+        "field": "beds_per_1000",
+        "type": "quantitative",
+        "format": ".2f",
+        "title": "Beds per 1,000"
+      },
+      {
+        "field": "status",
+        "type": "nominal",
+        "title": "Status"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 3
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "gray",
+        "strokeWidth": 1.5,
+        "strokeDash": [
+          4,
+          3
+        ]
+      },
+      "encoding": {
+        "x": {
+          "datum": 0,
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "gray"
+        }
+      }
+    }
+  ]
+}
